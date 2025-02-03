@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Universo de Amor</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        .space {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, white);
+            animation: shoot 3s infinite;
+            filter: drop-shadow(0 0 5px white);
+        }
+
+        @keyframes shoot {
+            0% { transform: translate(-100vw, -100vh); opacity: 1; }
+            100% { transform: translate(100vw, 100vh); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 15px;
+            z-index: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+                margin-bottom: 30px;
+            }
+            
+            .message p {
+                font-size: 1em;
+            }
+        }
+
+        .message {
+            font-size: 1.2em;
+            position: relative;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timer {
+            position: relative;
+            margin: 30px auto;
+            font-size: 0.9em;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: 'Orbitron', sans-serif;
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.3);
+            color: #fff;
+            width: 90%;
+            max-width: 300px;
+            line-height: 1.3;
+            animation: timer-glow 2s infinite alternate;
+        }
+
+        @media (max-width: 480px) {
+            .timer {
+                font-size: 0.8em;
+                padding: 8px;
+            }
+        }
+
+        @keyframes timer-glow {
+            from { box-shadow: 0 0 5px rgba(255, 255, 255, 0.2); }
+            to { box-shadow: 0 0 20px rgba(127, 192, 255, 0.4); }
+        }
+
+        .timer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .time-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            justify-content: center;
+        }
+
+        @media (max-width: 480px) {
+            .time-section {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 3px;
+            }
+            
+            .time-separator {
+                display: none;
+            }
+            
+            .time-unit:nth-child(odd) {
+                margin-right: 10px;
+            }
+        }
+
+        .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .time-value {
+            font-size: 1.6em;
+            background: linear-gradient(45deg, #9d4edd, #c77dff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(157, 78, 221, 0.4);
+            margin-bottom: 3px;
+        }
+
+        .time-label {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .time-separator {
+            font-size: 1.5em;
+            color: rgba(157, 78, 221, 0.8);
+            align-self: center;
+            margin-top: 8px;
+        }
+
+        .neptune {
+            position: fixed;
+            bottom: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(#4b6cb7, #182848);
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 50px 0;
+            padding: 0 15px;
+        }
+
+        @media (max-width: 480px) {
+            .image-grid {
+                gap: 10px;
+                margin: 30px 0;
+            }
+            
+            .image-grid img {
+                height: 150px;
+            }
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .image-grid img.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        h1 {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 50px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(45deg, #ff69b4, #7ec0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .tulipan {
+            position: fixed;
+            opacity: 0;
+            transition: all 2s ease;
+            z-index: 1;
+            pointer-events: none;
+            filter: drop-shadow(0 0 5px rgba(255, 105, 180, 0.3));
+        }
+
+        .tulipan.visible {
+            opacity: 0.4;
+        }
+
+        .tulipan-1 { left: 5%; bottom: -10%; width: 120px; }
+        .tulipan-2 { right: 5%; top: -10%; width: 100px; }
+        .tulipan-3 { left: 20%; top: 30%; width: 80px; }
+        .tulipan-4 { right: 15%; bottom: 20%; width: 90px; }
+
+        .message p {
+            transition: all 1.5s ease;
+            opacity: 0.3;
+            transform: translateY(20px);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .message p.active {
+            opacity: 1;
+            transform: translateY(0);
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="space">
+        <div class="shooting-star" style="top: 20vh; left: 10vw; animation-delay: 2s"></div>
+        <div class="shooting-star" style="top: 60vh; left: 30vw; animation-delay: 5s"></div>
+        <div class="neptune"></div>
+        
+        <!-- Tulipanes SVG -->
+        <svg class="tulipan tulipan-1" viewBox="0 0 100 150">
+            <path d="M50 5 C55 0 65 0 70 5 L60 40 C55 45 45 45 40 40 L30 5 C35 0 45 0 50 5 Z" fill="#ff69b4"/>
+            <path d="M50 50 L50 140" stroke="#7cfc00" stroke-width="3"/>
+            <path d="M50 80 L65 65" stroke="#7cfc00" stroke-width="3"/>
+        </svg>
+
+        <svg class="tulipan tulipan-2" viewBox="0 0 100 150">
+            <path d="M50 10 C40 0 30 5 35 15 L45 50 C50 55 60 55 65 50 L75 15 C80 5 70 0 60 10 Z" fill="#ff1493"/>
+            <path d="M50 55 L50 145" stroke="#32cd32" stroke-width="3"/>
+            <path d="M50 85 L35 70" stroke="#32cd32" stroke-width="3"/>
+        </svg>
+
+        <svg class="tulipan tulipan-3" viewBox="0 0 100 150">
+            <path d="M50 5 C60 0 70 5 65 15 L55 40 C50 50 40 50 35 40 L25 15 C20 5 30 0 40 5 Z" fill="#ff85c2"/>
+            <path d="M50 50 L50 140" stroke="#90ee90" stroke-width="3"/>
+            <path d="M50 80 L60 65" stroke="#90ee90" stroke-width="3"/>
+        </svg>
+
+        <svg class="tulipan tulipan-4" viewBox="0 0 100 150">
+            <path d="M50 10 C45 0 35 0 30 5 L40 40 C45 45 55 45 60 40 L70 5 C65 0 55 0 50 10 Z" fill="#ffb6c1"/>
+            <path d="M50 55 L50 145" stroke="#98fb98" stroke-width="3"/>
+            <path d="M50 85 L40 70" stroke="#98fb98" stroke-width="3"/>
+        </svg>
+    </div>
+
+    <div class="timer" id="timer"></div>
+
+    <div class="container">
+        <div class="message">
+            <h1 class="fade-in">Para isitabs</h1>
+            <p class="fade-in">Hola amorcito, quise salir de lo convencional y aprendí un poco a cómo crear páginas webs para poder hacerte un detalle fuera de lo común :p</p>
+            <p class="fade-in">Solo te quiero decir que ya estamos en nuestro primer añito juntos como pololitos.</p>
+            <p class="fade-in">Esto es algo super bacán para mí, ya que no pensé nunca en conocer a alguien como tú, lo cual me hace sentir orgulloso porque realmente encontré a alguien que amo con toda mi existencia.</p>
+            <p class="fade-in">Realmente siento que tú eres la persona que será la mamá de mis hijos y eso me hace poner contento porque habrían más niñitos tan hermosos como tú, lo cual sería lo mejor que me podría pasar.</p>
+            <p class="fade-in">Quiero casarme contigo y hacer mi futuro contigo, eres la indicada.</p>
+            <p class="fade-in">No quiero que cambies, me enamoré tan perdidamente de ti que no me veo sin ti y no tengo miedo, en el sentido de que estoy seguro en que de verdad nunca dejaré de sentir mariposas en mi estómago cada vez que te miro ❤️</p>
+        </div>
+
+        <div class="image-grid">
+            <img src="images/1.webp" class="fade-in">
+            <img src="images/2.webp" class="fade-in">
+            <img src="images/3.webp" class="fade-in">
+            <img src="images/4.webp" class="fade-in">
+            <img src="images/5.webp" class="fade-in">
+            <img src="images/6.webp" class="fade-in">
+            <img src="images/7.webp" class="fade-in">
+            <img src="images/8.webp" class="fade-in">
+            <img src="images/9.webp" class="fade-in">
+        </div>
+    </div>
+
+    <script>
+        // Temporizador
+        const startDate = new Date(2024, 1, 8);
+
+        function calcularTiempo() {
+            const ahora = new Date();
+            const dif = ahora - startDate;
+            
+            const dias = Math.floor(dif / 86400000);
+            const horas = Math.floor((dif % 86400000) / 3600000);
+            const minutos = Math.floor((dif % 3600000) / 60000);
+            const segundos = Math.floor((dif % 60000) / 1000);
+
+            return { dias, horas, minutos, segundos };
+        }
+
+        function pluralizar(cantidad, singular, plural) {
+            return cantidad === 1 ? singular : plural;
+        }
+
+        function actualizarTemporizador() {
+            const t = calcularTiempo();
+            const timer = document.getElementById('timer');
+            
+            timer.innerHTML = `
+                <div class="timer-content">
+                    <h3 style="text-align: center; margin: 0 0 10px 0; font-size: 1.1em; color: #ff69b4;">Nuestro tiempo amándonos bb</h3>
+                    <div class="time-section">
+                        <div class="time-unit">
+                            <span class="time-value">${t.dias}</span>
+                            <span class="time-label">${pluralizar(t.dias, 'Día', 'Días')}</span>
+                        </div>
+                        <div class="time-separator">:</div>
+                        <div class="time-unit">
+                            <span class="time-value">${String(t.horas).padStart(2, '0')}</span>
+                            <span class="time-label">Horas</span>
+                        </div>
+                        <div class="time-separator">:</div>
+                        <div class="time-unit">
+                            <span class="time-value">${String(t.minutos).padStart(2, '0')}</span>
+                            <span class="time-label">Minutos</span>
+                        </div>
+                        <div class="time-separator">:</div>
+                        <div class="time-unit">
+                            <span class="time-value">${String(t.segundos).padStart(2, '0')}</span>
+                            <span class="time-label">Segundos</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        setInterval(actualizarTemporizador, 1000);
+        actualizarTemporizador();
+
+        // Animaciones
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { 
+            threshold: 0.3,
+            rootMargin: '0px 0px -100px 0px'
+        });
+
+        document.querySelectorAll('.fade-in').forEach((element) => {
+            observer.observe(element);
+        });
+
+        // Efecto tulipanes
+        const tulipanesObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    entry.target.classList.remove('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.tulipan').forEach(tulipan => {
+            tulipanesObserver.observe(tulipan);
+        });
+
+        // Efecto texto activo
+        const textoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const allParagraphs = document.querySelectorAll('.message p');
+                
+                if(entry.isIntersecting) {
+                    allParagraphs.forEach(p => p.classList.remove('active'));
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.6,
+            rootMargin: '-50px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.message p').forEach(p => {
+            textoObserver.observe(p);
+        });
+
+        // Crear estrellas
+        function createStars() {
+            const space = document.querySelector('.space');
+            for(let i = 0; i < 300; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.animationDelay = Math.random() * 1.5 + 's';
+                space.appendChild(star);
+            }
+        }
+        
+        createStars();
+    </script>
+</body>
+</html>
